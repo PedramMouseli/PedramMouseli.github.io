@@ -1,10 +1,368 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>My Website</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedram Mouseli</title>
+  <meta name="description" content="Pedram Mouseli — AI researcher building deep learning models of health data and studying reasoning in large language models. Postdoctoral Fellow, University of Toronto.">
+  <meta property="og:title" content="Pedram Mouseli">
+  <meta property="og:description" content="AI researcher · representation learning for health data · reasoning in large language models.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/pic.png" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fbfbfa;
+      --surface: #ffffff;
+      --text: #18181b;
+      --muted: #63636b;
+      --faint: #9a9aa3;
+      --line: #e7e7e4;
+      --accent: #3b4fd8;
+      --accent-soft: #eef0fd;
+      --max: 760px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e0e10;
+        --surface: #151518;
+        --text: #ececee;
+        --muted: #a1a1aa;
+        --faint: #6b6b73;
+        --line: #26262b;
+        --accent: #8b9bff;
+        --accent-soft: #1b1e33;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; transition: color .15s, text-decoration-color .15s; }
+    a:hover { color: var(--accent); text-decoration-color: currentColor; }
+    .mono { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* Nav */
+    header.nav {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: saturate(160%) blur(10px);
+      -webkit-backdrop-filter: saturate(160%) blur(10px);
+      border-bottom: 1px solid transparent;
+    }
+    header.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-weight: 600; text-decoration: none; letter-spacing: -0.01em; }
+    nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; font-size: 14px; }
+    nav a { text-decoration: none; color: var(--muted); }
+    nav a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero { padding: 72px 0 56px; display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 36px; }
+    .hero-text { flex: 1; min-width: 0; }
+    .avatar {
+      flex: none; width: 132px; height: 132px; border-radius: 50%; object-fit: cover;
+      border: 1px solid var(--line); margin-top: 4px; background: var(--surface);
+    }
+    .card .key { font-size: 12.5px; color: var(--text); margin: -2px 0 14px; padding-left: 10px; border-left: 2px solid var(--accent); }
+    .eyebrow { font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; }
+    .eyebrow .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: 1px; }
+    h1 { font-size: clamp(34px, 6vw, 48px); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; margin: 0 0 22px; }
+    .lede { font-size: 18.5px; line-height: 1.6; color: var(--muted); margin: 0 0 28px; max-width: 640px; }
+    .lede strong { color: var(--text); font-weight: 500; }
+    .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .links a {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px;
+      font-size: 14px; text-decoration: none; background: var(--surface);
+    }
+    .links a:hover { border-color: var(--accent); }
+    .links svg { width: 15px; height: 15px; }
+
+    /* Sections */
+    section { padding: 48px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 28px; font-family: "Geist Mono", ui-monospace, monospace; }
+
+    /* Featured work */
+    .work { display: grid; gap: 14px; }
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px 24px 22px;
+      transition: border-color .15s, transform .15s;
+    }
+    .card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12.5px; color: var(--muted); }
+    .tag {
+      display: inline-block; padding: 2px 9px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent); font-weight: 500;
+    }
+    .tag.plain { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+    .card h3 { font-size: 19px; line-height: 1.35; letter-spacing: -0.015em; font-weight: 600; margin: 0 0 10px; }
+    .card p { margin: 0 0 14px; color: var(--muted); font-size: 15.5px; }
+    .authors { font-size: 13.5px; color: var(--faint); margin: 0 0 14px; }
+    .authors b { color: var(--text); font-weight: 500; }
+    .card .actions { display: flex; gap: 16px; font-size: 14px; }
+    .card .actions a { text-decoration: none; color: var(--accent); font-weight: 500; }
+    .card .actions a:hover { text-decoration: underline; }
+
+    /* Interests */
+    .interests { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px 28px; }
+    .interests h4 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+    .interests p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+    /* Publications */
+    .pubs { list-style: none; margin: 0; padding: 0; }
+    .pubs li { display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px dashed var(--line); }
+    .pubs li:last-child { border-bottom: 0; }
+    .pubs .yr { color: var(--faint); font-size: 13px; padding-top: 2px; }
+    .pubs .t { font-weight: 500; }
+    .pubs .a { color: var(--muted); font-size: 14px; }
+    .pubs .v { color: var(--muted); font-size: 14px; font-style: italic; }
+    .pubs .a b { color: var(--text); font-weight: 500; }
+    .note { font-size: 13px; color: var(--faint); margin-top: 18px; }
+
+    /* About / timeline */
+    .about p { margin: 0 0 16px; }
+    .timeline { list-style: none; margin: 28px 0 0; padding: 0; }
+    .timeline li { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 9px 0; font-size: 15px; }
+    .timeline .when { color: var(--faint); font-size: 13px; padding-top: 2px; }
+    .timeline .where { color: var(--muted); }
+
+    footer { border-top: 1px solid var(--line); padding: 28px 0 48px; font-size: 13.5px; color: var(--faint); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+    @media (max-width: 560px) {
+      .wrap { padding: 0 16px; }
+      nav ul { gap: 14px; font-size: 13.5px; }
+      nav li.hide-sm { display: none; }
+      .hero { padding: 40px 0 40px; flex-direction: column; gap: 20px; }
+      .avatar { width: 88px; height: 88px; }
+      .lede { font-size: 17px; }
+      .card { padding: 20px 18px; }
+      .pubs li { grid-template-columns: 1fr; gap: 2px; }
+      .timeline li { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to my website!</h1>
-    <p>Successfully hosted on GitHub Pages.</p>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Pedram Mouseli</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li class="hide-sm"><a href="#about">About</a></li>
+        <li><a href="assets/PedramMouseli_CV.pdf">CV</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+
+    <!-- Hero -->
+    <div class="hero">
+      <!-- Your photo: save it as assets/profile.jpg (square, at least 400×400). Hidden automatically until the file exists. -->
+      <img class="avatar" src="assets/profile.jpg" alt="Pedram Mouseli" width="132" height="132" onerror="this.remove()">
+      <div class="hero-text">
+      <p class="eyebrow mono"><span class="dot"></span>AI Researcher · Postdoctoral Fellow, University of Toronto</p>
+      <h1>Building models that learn from complex systems, and understanding what they learn.</h1>
+      <p class="lede">
+        I'm Pedram, an AI researcher interested in the representations models learn: what they capture, whether they generalize,
+        and whether they actually shape behaviour. I come at this from two sides. I build <strong>deep learning models of health data</strong>,
+        such as physiological and neural signals, that transfer to new people and new conditions. I also study
+        <strong>reasoning in large language models</strong>: how internal state and reasoning shape what models do.
+      </p>
+      <ul class="links">
+        <li><a href="mailto:pedram.mouseli@utoronto.ca">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a></li>
+        <li><a href="https://github.com/PedramMouseli">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub</a></li>
+        <li><a href="https://scholar.google.com/citations?user=4lJHf18AAAAJ&amp;hl=en">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3 1 9.5l4 2.4V17c0 2 3.1 4 7 4s7-2 7-4v-5.1l2-1.2V16h2V9.5L12 3Zm0 2.3 7.6 4.2L12 13.7 4.4 9.5 12 5.3Z"/></svg>Scholar</a></li>
+        <li><a href="https://www.linkedin.com/in/pedram-mouseli/">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4V21H3V9.75Zm6.5 0h3.8v1.6h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21h-4v-4.9c0-1.17-.02-2.68-1.63-2.68-1.64 0-1.89 1.28-1.89 2.6V21h-4V9.75Z"/></svg>LinkedIn</a></li>
+        <li><a href="assets/PedramMouseli_CV.pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>CV</a></li>
+      </ul>
+      </div>
+    </div>
+
+    <!-- Interests -->
+    <section id="interests">
+      <h2>Research themes</h2>
+      <div class="interests">
+        <div>
+          <h4>Representation learning for health data</h4>
+          <p>Self-supervised, multimodal models of physiological and neural signals.</p>
+        </div>
+        <div>
+          <h4>Reasoning and internal state in LLMs</h4>
+          <p>Interpretability, and testing which internal states and reasoning traces actually change behaviour.</p>
+        </div>
+        <div>
+          <h4>Generalization</h4>
+          <p>Models that hold up across people, tasks and conditions, and that keep an accurate picture of how a situation changes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Selected research -->
+    <section id="research">
+      <h2>Selected work</h2>
+      <div class="work">
+
+        <article class="card">
+          <div class="meta mono"><span class="tag">Interpretability</span><span class="tag plain">Under review · 2026</span></div>
+          <h3>Computation, Not Memory: Chain-of-Thought and State Tracking in LLM Agents</h3>
+          <p>
+            Does an LLM agent's reasoning actually drive its actions? In a task where agents must track a changing hidden state,
+            we separate generating reasoning at each step from keeping earlier reasoning in context. Most of the benefit comes from
+            reasoning written at the moment of action, and a state that probes can decode from activations is a limited guide to
+            what the agent does.
+          </p>
+          <p class="key mono">Reasoning helps as step-by-step computation, not as memory</p>
+          <p class="authors"><b>P. Mouseli</b>, M. Moayedi</p>
+          <!-- Add links once the preprint is public:
+          <div class="actions"><a href="#">Paper →</a><a href="#">Code →</a></div>
+          -->
+        </article>
+
+        <article class="card">
+          <div class="meta mono"><span class="tag">Deep learning · Biosignals</span><span class="tag plain">bioRxiv · 2026</span></div>
+          <h3>LENS: a transferable neuromuscular signature of musculoskeletal pain intensity</h3>
+          <p>
+            LENS (Latent sEMG Neuromuscular Signature) decodes exertion-evoked musculoskeletal pain intensity from a single
+            surface EMG channel. It is pre-trained with a cross-modal self-supervised objective that reconstructs muscle
+            oxygenation from sEMG in 183 adults. Trained only on healthy muscle physiology, it transfers to an unseen
+            chronic-pain cohort (myogenous TMD) through label-free test-time adaptation.
+          </p>
+          <p class="key mono">Unseen chronic-pain cohort: ρ = 0.61 · AUROC = 0.86</p>
+          <p class="authors"><b>P. Mouseli</b>, N. De Vera, S. Sagheer, I. Jurisica, W.D. Reid, M.S. Angst, N. Aghaeepour, M. Moayedi, I. Cioffi</p>
+          <div class="actions">
+            <a href="https://www.biorxiv.org/content/10.64898/2026.09.08.750203v1">Preprint →</a>
+            <a href="https://github.com/PedramMouseli/LENS">Code →</a>
+            <a href="https://borealisdata.ca/dataset.xhtml?persistentId=doi%3A10.5683%2FSP4%2FJCWT3H">Data →</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta mono"><span class="tag">Machine learning · Pain</span><span class="tag plain">PNAS · 2026</span><span class="tag plain">Co-first author</span></div>
+          <h3>Nociceptive sensitization and pain perception are dissociable in humans</h3>
+          <p>
+            I built the machine learning model that predicts who perceives the thermal grill illusion, pain evoked by
+            interlaced innocuous warm and cool bars, from behavioral, demographic and psychological features. The model
+            predicted pain perception but not the size of nociceptive sensitization, supporting the paper's central finding:
+            sensitization can occur without pain, so illusion responsiveness reflects a perceptual phenotype.
+          </p>
+          <p class="key mono">Predicting TGI responders: AUC = 0.81 · N = 251</p>
+          <p class="authors">M. Cormie*, <b>P. Mouseli</b>*, C. Martini, K. De Silva, I. Lauric, O. Khalil, D. Seminowicz, M. Moayedi &nbsp;·&nbsp; *equal contribution</p>
+          <div class="actions">
+            <a href="https://www.pnas.org/doi/full/10.1073/pnas.2603667123">Paper →</a>
+            <a href="https://github.com/CMSPR/TGI_SensitizationPainDissociation">Code →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section id="publications">
+      <h2>Publications</h2>
+      <ul class="pubs">
+        <li><span class="yr mono">2026</span><div>
+          <div class="t">Computation, Not Memory: Chain-of-Thought and State Tracking in LLM Agents</div>
+          <div class="a"><b>Mouseli, P.</b>, Moayedi, M.</div>
+          <div class="v">Under review</div></div></li>
+        <li><span class="yr mono">2026</span><div>
+          <div class="t"><a href="https://www.biorxiv.org/content/10.64898/2026.09.08.750203v1">LENS: a transferable neuromuscular signature of musculoskeletal pain intensity</a></div>
+          <div class="a"><b>Mouseli, P.</b>, De Vera, N., Sagheer, S., Jurisica, I., Reid, W.D., Angst, M.S., Aghaeepour, N., Moayedi, M., Cioffi, I.</div>
+          <div class="v">bioRxiv</div></div></li>
+        <li><span class="yr mono">2026</span><div>
+          <div class="t"><a href="https://www.pnas.org/doi/full/10.1073/pnas.2603667123">Nociceptive sensitization and pain perception are dissociable in humans</a></div>
+          <div class="a">Cormie, M.*, <b>Mouseli, P.*</b>, Martini, C., De Silva, K., Lauric, I., Khalil, O., Seminowicz, D., Moayedi, M.</div>
+          <div class="v">Proceedings of the National Academy of Sciences, 123(35), e2603667123</div></div></li>
+        <li><span class="yr mono">2026</span><div>
+          <div class="t">Prefrontal cortex connectivity during right and left hand dexterity tests in younger and older adults</div>
+          <div class="a">Kulkarni, M., Rassam, P., <b>Mouseli, P.</b>, Date, M., Mori, T., Van Hollebeke, M., Campos, J.L., Rozenberg, D., Reid, W.D.</div>
+          <div class="v">PLoS One, 21(2), e0342547</div></div></li>
+        <li><span class="yr mono">2025</span><div>
+          <div class="t">Functional connectivity differences in adults with ADHD: a MEG study</div>
+          <div class="a"><b>Mouseli, P.</b>, Dunkley, B.T., Moayedi, M.</div>
+          <div class="v">bioRxiv</div></div></li>
+        <li><span class="yr mono">2025</span><div>
+          <div class="t">Social media use and jaw motor activity: insights from electromyography and self-report data</div>
+          <div class="a">Lee, S., Koshkebaghi, D., <b>Mouseli, P.</b>, Cioffi, I.</div>
+          <div class="v">Journal of Oral Rehabilitation, 52(11), 1945–1954</div></div></li>
+        <li><span class="yr mono">2024</span><div>
+          <div class="t">Subjective salience ratings are a reliable proxy for physiological measures of arousal</div>
+          <div class="a">Hadjis, G.E., Atlas, L.Y., <b>Mouseli, P.</b>, Sexton, C.A., McAndrews, M.P., Moayedi, M.</div>
+          <div class="v">Pain</div></div></li>
+        <li><span class="yr mono">2023</span><div>
+          <div class="t">Leveraging the resting brain to predict memory decline after temporal lobectomy</div>
+          <div class="a">Audrain, S., Barnett, A., <b>Mouseli, P.</b>, McAndrews, M.P.</div>
+          <div class="v">Epilepsia, 64(11), 3061–3072</div></div></li>
+        <li><span class="yr mono">2023</span><div>
+          <div class="t">Insula-cingulate structural and functional connectivity: an ultra-high field MRI study</div>
+          <div class="a">Cormie, M.A., Kaya, B., Hadjis, G.E., <b>Mouseli, P.</b>, Moayedi, M.</div>
+          <div class="v">Cerebral Cortex, 33(17), 9787–9801</div></div></li>
+        <li><span class="yr mono">2022</span><div>
+          <div class="t">EEG ERP Preregistration Template</div>
+          <div class="a">Govaart, G.H., Schettino, A., … <b>Mouseli, P.</b>, … Paul, M.</div>
+          <div class="v">MetaArXiv</div></div></li>
+      </ul>
+      <p class="note">* equal contribution. Full list, including conference abstracts and talks, in my <a href="assets/PedramMouseli_CV.pdf">CV</a>.</p>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about">
+      <h2>About</h2>
+      <p>
+        I'm a Postdoctoral Fellow at the University of Toronto and a Research Analyst at the Krembil Research Institute (University Health Network).
+        My PhD in neuroscience at the University of Toronto focused on multimodal machine learning for pain, and before that I trained as an engineer,
+        with an MSc in Mechatronics Engineering where I studied brain networks with MEG.
+      </p>
+      <p>
+        I've taught deep learning for several years, currently as Head Teaching Assistant for <em>Applied Fundamentals of Deep Learning</em> at U of T Engineering,
+        and earlier as a project TA for Neuromatch Academy's Deep Learning and Computational Neuroscience courses. I review for
+        <em>Nature Communications</em>, the <em>Journal of Neuroscience</em> and <em>PAIN</em>.
+      </p>
+      <ul class="timeline">
+        <li><span class="when mono">2026 –</span><span>Postdoctoral Fellow <span class="where">· University of Toronto</span></span></li>
+        <li><span class="when mono">2022 –</span><span>Research Analyst <span class="where">· Krembil Research Institute, UHN</span></span></li>
+        <li><span class="when mono">2022 –</span><span>(Head) Teaching Assistant, Applied Fundamentals of Deep Learning <span class="where">· U of T Engineering</span></span></li>
+        <li><span class="when mono">2021 – 2026</span><span>PhD, Neuroscience <span class="where">· University of Toronto</span></span></li>
+        <li><span class="when mono">2017 – 2020</span><span>MSc, Mechatronics Engineering <span class="where">· K.N. Toosi University of Technology</span></span></li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="y">2026</span> Pedram Mouseli</span>
+    <span><a href="mailto:pedram.mouseli@utoronto.ca">pedram.mouseli@utoronto.ca</a></span>
+  </div>
+</footer>
+
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
